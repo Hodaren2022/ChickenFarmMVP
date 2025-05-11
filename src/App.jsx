@@ -1,13 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
-import { Layout, Menu, ConfigProvider, theme } from 'antd'
+import { Layout, Menu, ConfigProvider, theme, Button } from 'antd'
 import { 
   HomeOutlined, 
   CalendarOutlined, 
   DatabaseOutlined,
   MedicineBoxOutlined,
   ShoppingOutlined,
-  BarChartOutlined
+  BarChartOutlined,
+  MenuUnfoldOutlined,
+  MenuFoldOutlined
 } from '@ant-design/icons'
 
 // 頁面組件
@@ -26,6 +28,24 @@ const { Header, Content, Footer, Sider } = Layout
 
 function App() {
   const [collapsed, setCollapsed] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  
+  // 監聽視窗大小變化，判斷是否為手機螢幕
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+      if (window.innerWidth <= 768) {
+        setCollapsed(true)
+      }
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile)
+    }
+  }, [])
 
   return (
     <ConfigProvider
@@ -37,7 +57,27 @@ function App() {
       }}
     >
       <Layout style={{ minHeight: '100vh' }}>
-        <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
+        {isMobile && (
+          <Button 
+            type="primary" 
+            onClick={() => setCollapsed(!collapsed)}
+            style={{
+              position: 'fixed',
+              top: '10px',
+              left: collapsed ? '10px' : '200px',
+              zIndex: 1001,
+              transition: 'all 0.2s'
+            }}
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          />
+        )}
+        <Sider 
+          collapsible={!isMobile} 
+          collapsed={collapsed} 
+          onCollapse={setCollapsed}
+          breakpoint="lg"
+          style={{ zIndex: 1000 }}
+        >
           <div className="logo">土雞飼養記錄</div>
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
             <Menu.Item key="1" icon={<HomeOutlined />}>

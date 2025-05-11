@@ -1,0 +1,31 @@
+新增手機顯示
+
+目前的程式碼基礎，後續需要進行的響應式網頁設計 (RWD) 工作可以條列如下：
+
+後續響應式網頁設計工作清單：
+
+確認並添加 Viewport Meta Tag (如果尚未添加)：
+
+檢查您的 index.html 檔案 (通常在專案的 public 或根目錄)。
+確認 <head> 區域內是否包含這行程式碼：<meta name="viewport" content="width=device-width, initial-scale=1.0">。
+如果沒有，請務必添加。這是手機正確渲染網頁尺寸的基礎。
+擴展 CSS Media Queries 的應用範圍：
+
+您已經在 App.css 中使用了 @media (max-width: 768px)。這是一個很好的開始。
+根據您在手機上遇到的具體問題，識別哪些區塊或元件的樣式需要調整。
+在現有的 @media (max-width: 768px) 或其他需要的 Media Query 區塊內，針對這些元素編寫手機專用的 CSS 規則，覆寫或調整原有的桌面樣式。
+調整主要的佈局結構以適應小螢幕：
+
+側邊導航 (Sider): 在手機上，側邊導航通常會隱藏起來，變成一個漢堡選單按鈕來開啟。Ant Design 的 Layout.Sider 有 collapsed 屬性以及觸發折疊的功能，您可以研究 Ant Design 如何處理手機上的側邊導航響應式行為（通常需要額外的觸發按鈕和狀態管理）。
+主要內容區域： 檢查頁面內部的主要內容佈局。原本多欄的佈局在手機上可能需要改為單欄垂直堆疊。利用您已有的 Flexbox 或 Grid 基礎，在 Media Query 中調整 flex-direction, grid-template-columns 等屬性。
+優化各元件在手機上的顯示：
+
+表單 (Form): Ant Design 的 Form 元件本身支持響應式佈局（例如使用 Col 的響應式屬性）。確保表單項在小螢幕下能正確換行或堆疊，避免擠壓。調整 Form.Item 的間距。
+卡片 (Card): 雖然您已將 .card-container 在手機上改為單列 (grid-template-columns: 1fr;)，但檢查卡片內部的內容排版是否仍然清晰，必要時調整內距、字體大小等。
+按鈕組： .quick-action-buttons 和 .weather-buttons 已經使用了 flex-wrap: wrap; 並設定了 gap，這有助於按鈕在空間不足時自動換行。檢查它們在最窄的手機螢幕上是否依然顯示良好。
+表格 (Table): 雖然您使用了 overflow-x: auto;，但水平滾動可能不是最佳的手機體驗。如果可能，考慮在手機上將表格轉換為堆疊列表的樣式（每行變成一個塊，表頭變為標籤）或隱藏部分次要列。Ant Design 的 Table 元件也可能提供響應式的處理選項。
+文字內容： 在 Media Query 中調整字體大小，避免文字過大或過小。調整行高和段落間距，提高可讀性。處理可能過長的文字，考慮是否需要截斷或換行。
+圖片和圖標： 確保圖片不會溢出容器（使用 max-width: 100%; height: auto;）。檢查圖標大小在手機上是否合適。
+調整間距與對齊：
+
+全面檢查各個區塊和元件的內距 (padding) 和外距 (margin)。在手機上適當減少這些間距，讓畫面更緊湊有效，但仍需保持足夠的空間避免元素互相碰撞。

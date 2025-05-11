@@ -326,10 +326,10 @@ const ChickenManagement = () => {
     <div>
       <Title level={2}>雞隻管理</Title>
       
-      {/* 統計卡片 */}
-      <Row gutter={16} style={{ marginBottom: 16 }}>
-        <Col xs={24} sm={8}>
-          <Card>
+      {/* 統計卡片 - 使用更好的響應式設計 */}
+      <Row gutter={{ xs: 8, sm: 16 }} style={{ marginBottom: 16 }}>
+        <Col xs={24} sm={12} md={8}>
+          <Card className="summary-card">
             <Statistic 
               title="總進雞數量" 
               value={chickenRecords.reduce((sum, record) => sum + record.quantity, 0)} 
@@ -339,8 +339,8 @@ const ChickenManagement = () => {
           </Card>
         </Col>
         
-        <Col xs={24} sm={8}>
-          <Card>
+        <Col xs={24} sm={12} md={8}>
+          <Card className="summary-card">
             <Statistic 
               title="總死亡數量" 
               value={deathRecords.reduce((sum, record) => sum + record.quantity, 0)} 
@@ -350,8 +350,8 @@ const ChickenManagement = () => {
           </Card>
         </Col>
         
-        <Col xs={24} sm={8}>
-          <Card>
+        <Col xs={24} sm={12} md={8}>
+          <Card className="summary-card">
             <Statistic 
               title="目前存活數量" 
               value={totalChickens} 
@@ -362,8 +362,8 @@ const ChickenManagement = () => {
         </Col>
       </Row>
       
-      {/* 趨勢圖 */}
-      <Row gutter={16} style={{ marginBottom: 16 }}>
+      {/* 趨勢圖 - 響應式設計 */}
+      <Row gutter={{ xs: 8, sm: 16 }} style={{ marginBottom: 16 }}>
         <Col xs={24}>
           <Card 
             title={
@@ -372,9 +372,10 @@ const ChickenManagement = () => {
                 <span>活雞數量趨勢圖</span>
               </div>
             }
+            className="responsive-card"
           >
             {chickenTrendData.length > 0 ? (
-              <div className="chicken-trend-chart" style={{ height: 300, position: 'relative' }}>
+              <div className="chicken-trend-chart" style={{ height: 'calc(50vh - 100px)', minHeight: 200, position: 'relative' }}>
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
                   <svg width="100%" height="100%" viewBox="0 0 600 300" preserveAspectRatio="none">
                     {/* Y軸 */}
@@ -488,7 +489,7 @@ const ChickenManagement = () => {
                 batchNumber: `B${dayjs().format('YYYYMMDD')}`,
               }}
             >
-              <Row gutter={16}>
+              <Row gutter={{ xs: 8, sm: 16 }}>
                 <Col xs={24} sm={12} md={6}>
                   <Form.Item name="entryDate" label="進雞日期" rules={[{ required: true }]}>
                     <DatePicker style={{ width: '100%' }} />
@@ -503,15 +504,17 @@ const ChickenManagement = () => {
               
               <Divider orientation="left">雞種選擇</Divider>
               
-              <Row gutter={16}>
+              <Row gutter={{ xs: 8, sm: 16 }}>
                 <Col span={24}>
-                  <EditableButtonGroup
-                    buttons={chickenBreeds}
-                    onSelect={handleBreedSelect}
-                    onChange={handleChickenBreedsChange}
-                    selectedValue={chickenForm.getFieldValue('breed')}
-                    title="雞種選項"
-                  />
+                  <div className="quick-action-buttons">
+                    <EditableButtonGroup
+                      buttons={chickenBreeds}
+                      onSelect={handleBreedSelect}
+                      onChange={handleChickenBreedsChange}
+                      selectedValue={chickenForm.getFieldValue('breed')}
+                      title="雞種選項"
+                    />
+                  </div>
                 </Col>
                 
                 <Col xs={24} sm={12}>
@@ -535,15 +538,17 @@ const ChickenManagement = () => {
               
               <Divider orientation="left">供應商與價格</Divider>
               
-              <Row gutter={16}>
+              <Row gutter={{ xs: 8, sm: 16 }}>
                 <Col span={24}>
-                  <EditableButtonGroup
-                    buttons={suppliers}
-                    onSelect={handleSupplierSelect}
-                    onChange={handleSuppliersChange}
-                    selectedValue={chickenForm.getFieldValue('supplier')}
-                    title="供應商選項"
-                  />
+                  <div className="quick-action-buttons">
+                    <EditableButtonGroup
+                      buttons={suppliers}
+                      onSelect={handleSupplierSelect}
+                      onChange={handleSuppliersChange}
+                      selectedValue={chickenForm.getFieldValue('supplier')}
+                      title="供應商選項"
+                    />
+                  </div>
                 </Col>
                 
                 <Col xs={24} sm={12}>
@@ -582,13 +587,16 @@ const ChickenManagement = () => {
           </Card>
           
           <Card title="雞苗/進雞歷史記錄" style={{ marginTop: 16 }}>
-            <Table 
-              columns={chickenColumns} 
-              dataSource={chickenRecords} 
-              rowKey="id" 
-              pagination={{ pageSize: 5 }}
-              className="data-table"
-            />
+            <div className="data-table">
+              <Table 
+                columns={chickenColumns} 
+                dataSource={chickenRecords} 
+                rowKey="id" 
+                pagination={{ pageSize: 5, size: 'small' }}
+                scroll={{ x: 'max-content' }}
+                size="small"
+              />
+            </div>
           </Card>
         </TabPane>
         
@@ -605,7 +613,7 @@ const ChickenManagement = () => {
                 batchNumber: chickenRecords.length > 0 ? chickenRecords[0].batchNumber : '',
               }}
             >
-              <Row gutter={16}>
+              <Row gutter={{ xs: 8, sm: 16 }}>
                 <Col xs={24} sm={12} md={6}>
                   <Form.Item name="deathDate" label="死亡日期" rules={[{ required: true }]}>
                     <DatePicker style={{ width: '100%' }} />
@@ -631,15 +639,17 @@ const ChickenManagement = () => {
               
               <Divider orientation="left">死亡原因</Divider>
               
-              <Row gutter={16}>
+              <Row gutter={{ xs: 8, sm: 16 }}>
                 <Col span={24}>
-                  <EditableButtonGroup
-                    buttons={deathReasons}
-                    onSelect={handleReasonSelect}
-                    onChange={handleDeathReasonsChange}
-                    selectedValue={deathForm.getFieldValue('reason')}
-                    title="死亡原因選項"
-                  />
+                  <div className="quick-action-buttons">
+                    <EditableButtonGroup
+                      buttons={deathReasons}
+                      onSelect={handleReasonSelect}
+                      onChange={handleDeathReasonsChange}
+                      selectedValue={deathForm.getFieldValue('reason')}
+                      title="死亡原因選項"
+                    />
+                  </div>
                 </Col>
                 <Col xs={24} sm={12}>
                   <Form.Item name="reason" label="死亡原因" rules={[{ required: true }]}>
@@ -654,7 +664,7 @@ const ChickenManagement = () => {
                 </Col>
               </Row>
               
-              <Row gutter={16}>
+              <Row gutter={{ xs: 8, sm: 16 }}>
                 <Col span={24}>
                   <Form.Item name="notes" label="備註">
                     <Input.TextArea rows={3} placeholder="輸入任何關於死亡原因的詳細說明..." />
@@ -671,13 +681,16 @@ const ChickenManagement = () => {
           </Card>
             
           <Card title="死亡記錄歷史" style={{ marginTop: 16 }}>
-            <Table 
-              columns={deathColumns} 
-              dataSource={deathRecords} 
-              rowKey="id" 
-              pagination={{ pageSize: 5 }}
-              className="data-table"
-            />
+            <div className="data-table">
+              <Table 
+                columns={deathColumns} 
+                dataSource={deathRecords} 
+                rowKey="id" 
+                pagination={{ pageSize: 5, size: 'small' }}
+                scroll={{ x: 'max-content' }}
+                size="small"
+              />
+            </div>
           </Card>
         </TabPane>
       </Tabs>
