@@ -1,0 +1,33 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # 當 main 分支有新的 push 時觸發
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 📦
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ⚙️
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # 或您使用的 Node.js 版本
+
+      - name: Install dependencies 💾
+        run: npm install # 或 yarn install
+
+      - name: Build project 🏗️
+        run: npm run build # 或 yarn build
+
+      - name: Deploy to GitHub Pages 🚀
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist # 指定部署 dist 資料夾
+          # 如果您的 vite.config.js 中設定了 base: '/您的儲存庫名稱/'，則不需要額外設定
+          # 如果沒有設定 base，或者 base 是 '/'，可能需要設定 cname: <您的自訂網域名稱>
